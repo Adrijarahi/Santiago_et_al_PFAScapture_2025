@@ -44,4 +44,27 @@ def PFAS_to_dataframe(nth_dup, system_name):
             r += 0.1
         nPFAs_r_arr=np.array(nPFAs_r_lst)
         tlist_nPFAS_r.append(nPFAs_r_arr)
-    np.savetxt(str(nth_dup+1)+system_name+'tstp_nPFAS_z0_z7'+'.txt', tlist_nPFAS_r, delimiter =" ",header='')        
+    np.savetxt(str(nth_dup+1)+system_name+'tstp_nPFAS_z0_z7'+'.txt', tlist_nPFAS_r, delimiter =" ",header='')
+
+def read_in_traj(top_name,i):
+    traj_i = md.load('800frames_PFBA_'+str(i)+'.dcd',top=top_name)
+    print("the traj_being read is :"+str(i))
+    return(traj_i)
+
+
+
+system_name = 'TFEMA_PFBA_'
+top_name = 'TFEMA_PFBA.prmtop'
+traj_list=[]
+
+with Pool(10) as p:
+    args = [(top_name,i) for i in range(10)]
+    traj_list = p.starmap(read_in_traj, args)         ##### the list returned here will be the list of trajectories you read in
+    p.close()
+    p.join()
+
+with Pool(10) as p:
+    args = [(nth_dup,system_name) for nth_dup in range(10)]
+    p.starmap(PFAS_to_dataframe, args)
+    p.close()
+    p.join()
