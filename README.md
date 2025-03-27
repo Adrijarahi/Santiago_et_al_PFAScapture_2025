@@ -1,1 +1,3 @@
-# Santiago_et_al_PFAScapture_2025
+#Investigating the Structure-Function Relationships of Fluorinated Interfaces for PFAS
+Capture and Electrochemically-Mediated Release
+
